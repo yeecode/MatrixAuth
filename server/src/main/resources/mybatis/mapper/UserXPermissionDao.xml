@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.yeecode.matrixauth.server.dao.UserXPermissionDao">
+    <insert id="addOrUpdate">
+        INSERT INTO `user_x_permission` (`fullUserKey`,`permissions`)
+        VALUES (#{fullUserKey},#{permissions})
+        ON DUPLICATE KEY UPDATE
+        `permissions` = #{permissions};
+    </insert>
+
+    <delete id="deleteByFullUserKey">
+        DELETE FROM `user_x_permission` WHERE `fullUserKey`= #{fullUserKey};
+    </delete>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.yeecode.matrixauth.server.dao.UserXRoleDao">
+    <insert id="add">
+        INSERT INTO `user_x_role` (`fullUserKey` ,`roleId`)
+        VALUES (#{fullUserKey},#{roleId});
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM `user_x_role` WHERE  `fullUserKey` = #{fullUserKey} AND `roleId` = #{roleId};
+    </delete>
+
+    <delete id="deleteByFullUserKey">
+        DELETE FROM `user_x_role` WHERE  `fullUserKey` = #{fullUserKey};
+    </delete>
+
+    <delete id="deleteByRoleId">
+        DELETE FROM `user_x_role` WHERE  `roleId` = #{roleId};
+    </delete>
+</mapper>
