@@ -1,4 +1,5 @@
 HELP.md
+/target/*
 /*/target/*
 /*/*/target/*
 !MatrixAuth*.jar
