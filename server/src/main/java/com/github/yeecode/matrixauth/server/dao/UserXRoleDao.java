@@ -5,11 +5,11 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface UserXRoleDao {
-    Integer add(@Param("fullUserKey") String fullUserKey, @Param("roleId") Integer roleId);
+    Integer add(@Param("appName") String appName, @Param("userKey") String userKey, @Param("roleName") String roleName);
 
-    Integer delete(@Param("fullUserKey") String fullUserKey, @Param("roleId") Integer roleId);
+    Integer delete(@Param("appName") String appName, @Param("userKey") String userKey, @Param("roleName") String roleName);
 
-    Integer deleteByFullUserKey(@Param("fullUserKey") String fullUserKey);
+    Integer deleteByUserKey(@Param("appName") String appName, @Param("userKey") String userKey);
 
-    Integer deleteByRoleId(@Param("roleId") Integer roleId);
+    Integer deleteByRoleName(@Param("appName") String appName, @Param("roleName") String roleName);
 }

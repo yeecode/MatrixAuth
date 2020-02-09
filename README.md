@@ -16,7 +16,7 @@ High-performance lightweight distributed permission system.
 
 更多介绍信息可参照MatrixAuth官方网站：[官方网站](http://matrixauth.top/)。
 
-更多使用说明可参见MatrixAuth官方文档：[官方文档](http://matrixauth.top/doc/)。
+更多使用说明可参见MatrixAuth官方文档：[官方文档](http://matrixauth.top/docs/)。
 
 ---
 
@@ -59,4 +59,4 @@ MatrixAuthClient需要基于数据源中的信息展开权限验证。一个数�
 
 更多介绍信息可参照MatrixAuth官方网站：[官方网站](http://matrixauth.top/)。
 
-更多使用说明可参见MatrixAuth官方文档：[官方文档](http://matrixauth.top/doc/)。
+更多使用说明可参见MatrixAuth官方文档：[官方文档](http://matrixauth.top/docs/)。

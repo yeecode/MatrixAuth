@@ -6,5 +6,5 @@ public class Sentence {
     public static final String ILLEGAL_APP_TOKEN = "Application token verification failed.";
     public static final String NONE_APP_FOUND = "None application found.";
     public static final String NONE_OBJECT_FOUND = "None object found.";
-    public static final String REQUEST_SOURCE_CONFLICT_ROLE_TYPE = "角色类型与修改来源不匹配.";
+    public static final String REQUEST_SOURCE_CONFLICT_ROLE_TYPE = "This type of role does not allow editing using the current path.";
 }

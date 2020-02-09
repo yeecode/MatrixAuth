@@ -9,6 +9,7 @@ import com.github.yeecode.matrixauth.server.dao.RoleXPermissionDao;
 import com.github.yeecode.matrixauth.server.model.ApplicationModel;
 import com.github.yeecode.matrixauth.server.model.PermissionModel;
 import com.github.yeecode.matrixauth.server.tenant.TenantSwitcher;
+import com.github.yeecode.matrixauth.server.util.FullUserKeyGenerator;
 import com.github.yeecode.matrixauth.server.util.Result;
 import com.github.yeecode.matrixauth.server.util.ResultUtil;
 import com.github.yeecode.matrixauth.server.util.TokenValidator;
@@ -65,7 +66,7 @@ public class PermissionBusiness {
         }
     }
 
-    public Result deleteByIdAndAppName(String appToken, PermissionModel permissionModel) {
+    public Result deleteByKey(String appToken, PermissionModel permissionModel) {
         try {
             ApplicationModel applicationModel = applicationDao.queryByName(permissionModel.getAppName());
             if (applicationModel == null) {
@@ -73,7 +74,7 @@ public class PermissionBusiness {
             }
             if (tokenValidator.checkApplicationToken(appToken, applicationModel)) {
                 CacheClient cacheClient = tenantSwitcher.switchByApplication(applicationModel);
-                Integer count = proxySelf.deleteById(permissionModel.getId(), cacheClient);
+                Integer count = proxySelf.deleteByKey(permissionModel.getAppName(),permissionModel.getKey(), cacheClient);
                 return ResultUtil.getSuccessResult(count);
             } else {
                 return ResultUtil.getFailResult(Sentence.ILLEGAL_APP_TOKEN);
@@ -84,7 +85,7 @@ public class PermissionBusiness {
         }
     }
 
-    public Result updateByIdAndAppName(String appToken, PermissionModel permissionModel) {
+    public Result updateByKey(String appToken, PermissionModel permissionModel) {
         try {
             ApplicationModel applicationModel = applicationDao.queryByName(permissionModel.getAppName());
             if (applicationModel == null) {
@@ -119,12 +120,12 @@ public class PermissionBusiness {
         }
     }
 
-    public Result queryByIdAndAppName(String appToken, PermissionModel permissionModel) {
+    public Result queryByKey(String appToken, PermissionModel permissionModel) {
         try {
             ApplicationModel applicationModel = applicationDao.queryByName(permissionModel.getAppName());
             if (tokenValidator.checkApplicationToken(appToken, applicationModel)) {
                 tenantSwitcher.switchByApplication(applicationModel);
-                PermissionModel permissionModelResult = permissionDao.queryById(permissionModel.getId());
+                PermissionModel permissionModelResult = permissionDao.queryByKey(permissionModel.getKey(),permissionModel.getAppName());
                 return ResultUtil.getSuccessResult(permissionModelResult);
             } else {
                 return ResultUtil.getFailResult(Sentence.ILLEGAL_APP_TOKEN);
@@ -136,12 +137,13 @@ public class PermissionBusiness {
     }
 
     @Transactional
-    public Integer deleteById(Integer permissionId, CacheClient cacheClient) {
-        List<String> affectedUsers = authDao.queryFullUserKeyByPermissionId(permissionId);
-        roleXPermissionDao.deleteByPermissionId(permissionId);
-        Integer count = permissionDao.deleteById(permissionId);
-        for (String fullUserKey : affectedUsers) {
-            String permissions = StringUtils.join(authDao.queryPermissionCodesByFullUserKey(fullUserKey), ';');
+    public Integer deleteByKey(String appName, String permKey, CacheClient cacheClient) {
+        List<String> affectedUserKeys = authDao.queryUserKeyByPermKey(appName,permKey);
+        roleXPermissionDao.deleteByPermKey(appName, permKey);
+        Integer count = permissionDao.deleteByKey(permKey, appName);
+        for (String userKey : affectedUserKeys) {
+            String permissions = StringUtils.join(authDao.queryPermKeysByUserKey(appName, userKey), ';');
+            String fullUserKey = FullUserKeyGenerator.getFullUserKey(appName, userKey);
             userXPermissionBusiness.addOrUpdatePermissionsByFullUserKey(fullUserKey, permissions);
             cacheClient.addOrUpdate(fullUserKey, permissions);
         }
@@ -150,12 +152,13 @@ public class PermissionBusiness {
 
     @Transactional
     public Integer updateById(PermissionModel permissionModel, CacheClient cacheClient) {
-        List<String> affectedUsers = authDao.queryFullUserKeyByPermissionId(permissionModel.getId());
-        Integer count = permissionDao.updateById(permissionModel);
-        for (String fullUserKey : affectedUsers) {
-            String permissions = StringUtils.join(authDao.queryPermissionCodesByFullUserKey(fullUserKey), ';');
-            userXPermissionBusiness.addOrUpdatePermissionsByFullUserKey(fullUserKey, permissions);
-            cacheClient.addOrUpdate(fullUserKey, permissions);
+        List<String> affectedUserKeys = authDao.queryUserKeyByPermKey(permissionModel.getAppName(),permissionModel.getKey());
+        Integer count = permissionDao.updateByKey(permissionModel);
+        for (String userKey : affectedUserKeys) {
+            String permissionKeys = StringUtils.join(authDao.queryPermKeysByUserKey(permissionModel.getAppName(),permissionModel.getKey()), ';');
+            String fullUserKey = FullUserKeyGenerator.getFullUserKey(permissionModel.getAppName(), userKey);
+            userXPermissionBusiness.addOrUpdatePermissionsByFullUserKey(fullUserKey, permissionKeys);
+            cacheClient.addOrUpdate(fullUserKey, permissionKeys);
         }
         return count;
     }

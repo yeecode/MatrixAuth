@@ -10,11 +10,11 @@ import java.util.List;
 public interface PermissionDao {
     Integer add(PermissionModel cacheModel);
 
-    Integer deleteById(@Param("id") Integer id);
+    Integer deleteByKey(@Param("key") String key, @Param("appName") String appName);
 
-    Integer updateById(PermissionModel cacheModel);
+    Integer updateByKey(PermissionModel cacheModel);
 
-    List<PermissionModel> queryByAppName(@Param("name") String name);
+    List<PermissionModel> queryByAppName(@Param("appName") String appName);
 
-    PermissionModel queryById(@Param("id") Integer id);
+    PermissionModel queryByKey(@Param("key") String key, @Param("appName") String appName);
 }

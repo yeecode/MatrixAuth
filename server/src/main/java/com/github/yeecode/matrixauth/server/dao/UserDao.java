@@ -10,11 +10,11 @@ import java.util.List;
 public interface UserDao {
     Integer add(UserModel cacheModel);
 
-    Integer deleteByKeyAndAppName(@Param("key") String key, @Param("appName") String appName);
+    Integer deleteByKey(@Param("key") String key, @Param("appName") String appName);
 
-    Integer updateByKeyAndAppName(UserModel cacheModel);
+    Integer updateByKey(UserModel cacheModel);
 
     List<UserModel> queryByAppName(@Param("appName") String appName);
 
-    UserModel queryByKeyAndAppName(@Param("key") String key, @Param("appName") String appName);
+    UserModel queryByKey(@Param("key") String key, @Param("appName") String appName);
 }

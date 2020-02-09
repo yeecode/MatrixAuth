@@ -3,30 +3,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.yeecode.matrixauth.server.dao.RoleDao">
     <insert id="add" parameterType="RoleModel">
-        INSERT INTO role (`appName`,`name`,`parentId`,`description`,`type`)
-        VALUES (#{appName},#{name},#{parentId},#{description},#{type});
+        INSERT INTO role (`appName`,`name`,`description`,`type`)
+        VALUES (#{appName},#{name},#{description},#{type});
     </insert>
 
-    <delete id="deleteById" parameterType="Integer">
-        DELETE FROM role WHERE  `id` = #{id};
+    <delete id="deleteByName" parameterType="Integer">
+        DELETE FROM role WHERE  `name` = #{name} AND `appName` = #{appName};
     </delete>
 
-    <update id="updateById" parameterType="RoleModel">
+    <update id="updateByName" parameterType="RoleModel">
         UPDATE role
         <set>
-            `name` = #{name},
-            `parentId` = #{parentId},
             `description` = #{description},
             `type` = #{type}
         </set>
-        WHERE id = #{id}
+        WHERE  `name` = #{name} AND `appName` = #{appName};
     </update>
 
     <select id="queryByAppName" resultType="RoleModel">
         SELECT * FROM role WHERE appName = #{appName};
     </select>
 
-    <select id="queryById" resultType="RoleModel">
-        SELECT * FROM role WHERE id = #{id};
+    <select id="queryByName" resultType="RoleModel">
+        SELECT * FROM role WHERE  `name` = #{name} AND `appName` = #{appName};
     </select>
 </mapper>

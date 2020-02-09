@@ -53,21 +53,21 @@ public class AuthBusiness {
         proxySelf = context.getBean(AuthBusiness.class);
     }
 
-    public Result addUserXRole(String appToken, String appName, String userKey, Integer roleId, RequestSource requestSource) {
+    public Result addUserXRole(String appToken, String appName, String userKey, String roleName, RequestSource requestSource) {
         try {
             ApplicationModel applicationModel = applicationDao.queryByName(appName);
             if (applicationModel == null) {
                 return ResultUtil.getFailResult(Sentence.NONE_APP_FOUND);
             }
             CacheClient cacheClient = tenantSwitcher.switchByApplication(applicationModel);
-            RoleModel roleModel = roleDao.queryById(roleId);
+            RoleModel roleModel = roleDao.queryByName(roleName,appName);
             if (roleModel == null) {
                 return ResultUtil.getFailResult(Sentence.NONE_OBJECT_FOUND);
             }
 
             if (RoleType.valueOf(roleModel.getType()).isSupportedRequestSources(requestSource)) {
                 if (tokenValidator.checkApplicationToken(appToken, applicationModel)) {
-                    Integer count = proxySelf.addUserXRole(appName, userKey, roleId, cacheClient);
+                    Integer count = proxySelf.addUserXRole(appName, userKey, roleName, cacheClient);
                     return ResultUtil.getSuccessResult(count);
                 } else {
                     return ResultUtil.getFailResult(Sentence.ILLEGAL_APP_TOKEN);
@@ -81,17 +81,17 @@ public class AuthBusiness {
         }
     }
 
-    public Result deleteUserXRole(String appToken, String appName, String userKey, Integer roleId, RequestSource requestSource) {
+    public Result deleteUserXRole(String appToken, String appName, String userKey, String roleName, RequestSource requestSource) {
         try {
             ApplicationModel applicationModel = applicationDao.queryByName(appName);
             if (applicationModel == null) {
                 return ResultUtil.getFailResult(Sentence.NONE_APP_FOUND);
             }
             CacheClient cacheClient = tenantSwitcher.switchByApplication(applicationModel);
-            RoleModel roleModel = roleDao.queryById(roleId);
+            RoleModel roleModel = roleDao.queryByName(appName, roleName);
             if (RoleType.valueOf(roleModel.getType()).isSupportedRequestSources(requestSource)) {
                 if (tokenValidator.checkApplicationToken(appToken, applicationModel)) {
-                    Integer count = proxySelf.deleteUserXRole(appName, userKey, roleId, cacheClient);
+                    Integer count = proxySelf.deleteUserXRole(appName, userKey, roleName, cacheClient);
                     return ResultUtil.getSuccessResult(count);
                 } else {
                     return ResultUtil.getFailResult(Sentence.ILLEGAL_APP_TOKEN);
@@ -106,7 +106,7 @@ public class AuthBusiness {
         }
     }
 
-    public Result addRoleXPermission(String appToken, String appName, Integer roleId, Integer permissionId) {
+    public Result addRoleXPermission(String appToken, String appName, String roleName, String permKey) {
         try {
             ApplicationModel applicationModel = applicationDao.queryByName(appName);
             if (applicationModel == null) {
@@ -115,7 +115,7 @@ public class AuthBusiness {
 
             if (tokenValidator.checkApplicationToken(appToken, applicationModel)) {
                 CacheClient cacheClient = tenantSwitcher.switchByApplication(applicationModel);
-                Integer count = proxySelf.addRoleXPermission(roleId, permissionId, cacheClient);
+                Integer count = proxySelf.addRoleXPermission(appToken, roleName, permKey, cacheClient);
                 return ResultUtil.getSuccessResult(count);
             } else {
                 return ResultUtil.getFailResult(Sentence.ILLEGAL_APP_TOKEN);
@@ -126,7 +126,7 @@ public class AuthBusiness {
         }
     }
 
-    public Result delRoleXPermission(String appToken, String appName, Integer roleId, Integer permissionId) {
+    public Result delRoleXPermission(String appToken, String appName, String roleName, String permKey) {
         try {
             ApplicationModel applicationModel = applicationDao.queryByName(appName);
             if (applicationModel == null) {
@@ -135,7 +135,7 @@ public class AuthBusiness {
 
             if (tokenValidator.checkApplicationToken(appToken, applicationModel)) {
                 CacheClient cacheClient = tenantSwitcher.switchByApplication(applicationModel);
-                Integer count = proxySelf.delRoleXPermission(roleId, permissionId, cacheClient);
+                Integer count = proxySelf.delRoleXPermission(appName, roleName, permKey, cacheClient);
                 return ResultUtil.getSuccessResult(count);
             } else {
                 return ResultUtil.getFailResult(Sentence.ILLEGAL_APP_TOKEN);
@@ -163,46 +163,45 @@ public class AuthBusiness {
     }
 
     @Transactional
-    public Integer addUserXRole(String appName, String userKey, Integer roleId, CacheClient cacheClient) {
-        String fullUserKey = FullUserKeyGenerator.getFullUserKey(appName, userKey);
-        Integer count = userXRoleDao.add(fullUserKey, roleId);
-        List<String> affectedUsers = new ArrayList<>();
-        affectedUsers.add(fullUserKey);
-        refreshUserXPermissions(affectedUsers, cacheClient);
+    public Integer addUserXRole(String appName, String userKey, String roleName, CacheClient cacheClient) {
+        Integer count = userXRoleDao.add(appName,userKey, roleName);
+        List<String> affectedUserKeys = new ArrayList<>();
+        affectedUserKeys.add(userKey);
+        refreshUserXPermissions(appName,affectedUserKeys, cacheClient);
         return count;
     }
 
     @Transactional
-    public Integer deleteUserXRole(String appName, String userKey, Integer roleId, CacheClient cacheClient) {
-        String fullUserKey = FullUserKeyGenerator.getFullUserKey(appName, userKey);
-        Integer count = userXRoleDao.delete(fullUserKey, roleId);
-        List<String> affectedUsers = new ArrayList<>();
-        affectedUsers.add(fullUserKey);
-        refreshUserXPermissions(affectedUsers, cacheClient);
+    public Integer deleteUserXRole(String appName, String userKey, String roleName, CacheClient cacheClient) {
+        Integer count = userXRoleDao.delete(appName,userKey, roleName);
+        List<String> affectedUserKeys = new ArrayList<>();
+        affectedUserKeys.add(userKey);
+        refreshUserXPermissions(appName,affectedUserKeys, cacheClient);
         return count;
     }
 
     @Transactional
-    public Integer addRoleXPermission(Integer roleId, Integer permissionId, CacheClient cacheClient) {
-        Integer count = roleXPermissionDao.add(roleId, permissionId);
-        List<String> affectedUsers = authDao.queryFullUserKeyByRoleId(roleId);
-        refreshUserXPermissions(affectedUsers, cacheClient);
+    public Integer addRoleXPermission(String appName, String roleName, String permKey, CacheClient cacheClient) {
+        Integer count = roleXPermissionDao.add(appName, roleName, permKey);
+        List<String> affectedUserKeys = authDao.queryUserKeyByRoleName(roleName, appName);
+        refreshUserXPermissions(appName, affectedUserKeys, cacheClient);
         return count;
     }
 
     @Transactional
-    public Integer delRoleXPermission(Integer roleId, Integer permissionId, CacheClient cacheClient) {
-        List<String> affectedUsers = authDao.queryFullUserKeyByRoleId(roleId);
-        Integer count = roleXPermissionDao.delete(roleId, permissionId);
-        refreshUserXPermissions(affectedUsers, cacheClient);
+    public Integer delRoleXPermission(String appName, String roleName, String permKey, CacheClient cacheClient) {
+        List<String> affectedUserKeys = authDao.queryUserKeyByRoleName(roleName, appName);
+        Integer count = roleXPermissionDao.delete(appName, roleName, permKey);
+        refreshUserXPermissions(appName, affectedUserKeys, cacheClient);
         return count;
     }
 
-    private void refreshUserXPermissions(List<String> affectedUsers, CacheClient cacheClient) {
-        for (String fullUserKey : affectedUsers) {
-            String permissions = StringUtils.join(authDao.queryPermissionCodesByFullUserKey(fullUserKey), ';');
-            userXPermissionBusiness.addOrUpdatePermissionsByFullUserKey(fullUserKey, permissions);
-            cacheClient.addOrUpdate(fullUserKey, permissions);
+    private void refreshUserXPermissions(String appName, List<String> affectedUserKeys, CacheClient cacheClient) {
+        for (String userKey : affectedUserKeys) {
+            String permissionKeys = StringUtils.join(authDao.queryPermKeysByUserKey(appName,userKey), ';');
+            String fullUserKey = FullUserKeyGenerator.getFullUserKey(appName,userKey);
+            userXPermissionBusiness.addOrUpdatePermissionsByFullUserKey(fullUserKey, permissionKeys);
+            cacheClient.addOrUpdate(fullUserKey, permissionKeys);
         }
     }
 }

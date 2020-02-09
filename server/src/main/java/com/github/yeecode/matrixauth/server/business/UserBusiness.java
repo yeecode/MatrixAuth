@@ -65,7 +65,7 @@ public class UserBusiness {
         }
     }
 
-    public Result deleteByKeyAndAppName(String appToken, UserModel userModel) {
+    public Result deleteByKey(String appToken, UserModel userModel) {
         try {
             ApplicationModel applicationModel = applicationDao.queryByName(userModel.getAppName());
             if (applicationModel == null) {
@@ -73,7 +73,7 @@ public class UserBusiness {
             }
             if (tokenValidator.checkApplicationToken(appToken, applicationModel)) {
                 CacheClient cacheClient = tenantSwitcher.switchByApplication(applicationModel);
-                Integer count = proxySelf.deleteByKeyAndAppName(userModel.getAppName(), userModel.getKey(), cacheClient);
+                Integer count = proxySelf.deleteByKey(userModel.getAppName(), userModel.getKey(), cacheClient);
                 return ResultUtil.getSuccessResult(count);
             } else {
                 return ResultUtil.getFailResult(Sentence.ILLEGAL_APP_TOKEN);
@@ -84,7 +84,7 @@ public class UserBusiness {
         }
     }
 
-    public Result updateByKeyAndAppName(String appToken, UserModel userModel) {
+    public Result updateByKey(String appToken, UserModel userModel) {
         try {
             ApplicationModel applicationModel = applicationDao.queryByName(userModel.getAppName());
             if (applicationModel == null) {
@@ -93,7 +93,7 @@ public class UserBusiness {
 
             if (tokenValidator.checkApplicationToken(appToken, applicationModel)) {
                 tenantSwitcher.switchByApplication(applicationModel);
-                return ResultUtil.getSuccessResult(userDao.updateByKeyAndAppName(userModel));
+                return ResultUtil.getSuccessResult(userDao.updateByKey(userModel));
             } else {
                 return ResultUtil.getFailResult(Sentence.ILLEGAL_APP_TOKEN);
             }
@@ -119,12 +119,12 @@ public class UserBusiness {
         }
     }
 
-    public Result queryByKeyAndAppName(String appToken, UserModel userModel) {
+    public Result queryByKey(String appToken, UserModel userModel) {
         try {
             ApplicationModel applicationModel = applicationDao.queryByName(userModel.getAppName());
             if (tokenValidator.checkApplicationToken(appToken, applicationModel)) {
                 tenantSwitcher.switchByApplication(applicationModel);
-                UserModel userModelResult = userDao.queryByKeyAndAppName(userModel.getKey(), userModel.getAppName());
+                UserModel userModelResult = userDao.queryByKey(userModel.getKey(), userModel.getAppName());
                 return ResultUtil.getSuccessResult(userModelResult);
             } else {
                 return ResultUtil.getFailResult(Sentence.ILLEGAL_APP_TOKEN);
@@ -136,11 +136,11 @@ public class UserBusiness {
     }
 
     @Transactional
-    Integer deleteByKeyAndAppName(String appName, String userKey, CacheClient cacheClient) {
+    Integer deleteByKey(String appName, String userKey, CacheClient cacheClient) {
+        userXRoleDao.deleteByUserKey(appName, userKey);
         String fullUserKey = FullUserKeyGenerator.getFullUserKey(appName, userKey);
-        userXRoleDao.deleteByFullUserKey(fullUserKey);
         userXPermissionDao.deleteByFullUserKey(fullUserKey);
         cacheClient.delete(fullUserKey);
-        return userDao.deleteByKeyAndAppName(userKey, appName);
+        return userDao.deleteByKey(userKey, appName);
     }
 }

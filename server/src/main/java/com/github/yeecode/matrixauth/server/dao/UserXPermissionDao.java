@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface UserXPermissionDao {
-    Integer addOrUpdate(@Param("fullUserKey") String fullUserKey, @Param("permissions") String permissions);
+    Integer addOrUpdate(@Param("fullUserKey") String fullUserKey, @Param("permissionKeys") String permissionKeys);
 
     Integer deleteByFullUserKey(@Param("fullUserKey") String fullUserKey);
 }

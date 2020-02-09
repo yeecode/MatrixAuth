@@ -10,11 +10,23 @@ public class MatrixAuthClient {
     @Autowired
     private HttpClientBean httpClientBean;
 
-    public Result addUserXRole(String userKey, String roleId) {
-        return httpClientBean.addUserXRole(userKey, roleId);
+    public Result addUserXRole(String userKey, String roleName) {
+        return httpClientBean.addUserXRole(userKey, roleName);
     }
 
-    public Result deleteUserXRole(String userKey, String roleId) {
-        return httpClientBean.deleteUserXRole(userKey, roleId);
+    public Result deleteUserXRole(String userKey, String roleName) {
+        return httpClientBean.deleteUserXRole(userKey, roleName);
+    }
+
+    public Result addUser(String userKey, String userName) {
+        return httpClientBean.addUser(userKey, userName);
+    }
+
+    public Result deleteUser(String userKey) {
+        return httpClientBean.deleteUser(userKey);
+    }
+
+    public Result updateUser(String userKey, String userName) {
+        return httpClientBean.updateUser(userKey, userName);
     }
 }

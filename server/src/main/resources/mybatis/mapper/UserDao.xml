@@ -7,11 +7,11 @@
         VALUES (#{appName},#{name},#{key});
     </insert>
 
-    <delete id="deleteByKeyAndAppName" parameterType="String">
+    <delete id="deleteByKey" parameterType="String">
         DELETE FROM `user` WHERE  `key` = #{key} AND `appName` = #{appName};
     </delete>
 
-    <update id="updateByKeyAndAppName" parameterType="UserModel">
+    <update id="updateByKey" parameterType="UserModel">
         UPDATE user
         <set>
             `name` = #{name}
@@ -23,7 +23,7 @@
         SELECT * FROM user WHERE appName = #{appName};
     </select>
 
-    <select id="queryByKeyAndAppName" resultType="UserModel">
+    <select id="queryByKey" resultType="UserModel">
         SELECT * FROM user WHERE `key` = #{key} AND `appName` = #{appName};
     </select>
 </mapper>

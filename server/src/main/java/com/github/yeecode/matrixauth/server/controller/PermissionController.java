@@ -20,28 +20,27 @@ public class PermissionController {
 
     @RequestMapping("/add")
     public Result add(@NotBlank String appName,
-                      @NotBlank String permissionName,
-                      @NotBlank String permissionCode,
+                      @NotBlank String permKey,
+                      @NotBlank String name,
                       String description,
                       String appToken) {
-        return permissionBusiness.add(appToken, new PermissionModel(appName, permissionName, permissionCode, description));
+        return permissionBusiness.add(appToken, new PermissionModel(appName, permKey, name, description));
     }
 
-    @RequestMapping("/deleteByIdAndAppName")
-    public Result deleteByIdAndAppName(@NotBlank String appName,
-                                       @NotNull Integer permissionId,
-                                       String appToken) {
-        return permissionBusiness.deleteByIdAndAppName(appToken, new PermissionModel(permissionId, appName, null, null, null));
+    @RequestMapping("/deleteByKey")
+    public Result deleteByKey(@NotBlank String appName,
+                              @NotNull String permKey,
+                              String appToken) {
+        return permissionBusiness.deleteByKey(appToken, new PermissionModel(appName, permKey, null, null));
     }
 
-    @RequestMapping("/updateByIdAndAppName")
-    public Result updateByIdAndAppName(@NotBlank String appName,
-                                       @NotNull Integer permissionId,
-                                       @NotBlank String permissionName,
-                                       String permissionCode,
-                                       String description,
-                                       String appToken) {
-        return permissionBusiness.updateByIdAndAppName(appToken, new PermissionModel(permissionId, appName, permissionName, permissionCode, description));
+    @RequestMapping("/updateByKey")
+    public Result updateByKey(@NotBlank String appName,
+                              @NotNull String permKey,
+                              @NotBlank String name,
+                              String description,
+                              String appToken) {
+        return permissionBusiness.updateByKey(appToken, new PermissionModel(appName, permKey, name, description));
     }
 
     @RequestMapping("/queryByAppName")
@@ -50,10 +49,10 @@ public class PermissionController {
         return permissionBusiness.queryByAppName(appToken, appName);
     }
 
-    @RequestMapping("/queryByIdAndAppName")
-    public Result queryByIdAndAppName(@NotBlank String appName,
-                                      @NotNull Integer permissionId,
-                                      String appToken) {
-        return permissionBusiness.queryByIdAndAppName(appToken, new PermissionModel(permissionId, appName, null, null, null));
+    @RequestMapping("/queryByKey")
+    public Result queryByKey(@NotBlank String appName,
+                             @NotNull String permKey,
+                             String appToken) {
+        return permissionBusiness.queryByKey(appToken, new PermissionModel(appName, permKey, null, null));
     }
 }

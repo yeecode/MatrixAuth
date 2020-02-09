@@ -22,41 +22,38 @@ public class RoleController {
     @RequestMapping("/add")
     public Result add(@NotBlank String appName,
                       @NotBlank String roleName,
-                      Integer parentId,
                       String description,
                       @Pattern(regexp = "InterfaceControlled|BusinessAppControlled|InterfaceAndBusinessAppControlled") String type,
                       String appToken) {
-        return roleBusiness.add(appToken, new RoleModel(appName, roleName, parentId, description, type));
+        return roleBusiness.add(appToken, new RoleModel(appName, roleName, description, type));
     }
 
-    @RequestMapping("/deleteByIdAndAppName")
-    public Result deleteByIdAndAppName(@NotBlank String appName,
-                                       @NotNull Integer roleId,
+    @RequestMapping("/deleteByName")
+    public Result deleteByName(@NotBlank String appName,
+                                       @NotNull String roleName,
                                        String appToken) {
-        return roleBusiness.deleteByIdAndAppName(appToken, new RoleModel(roleId, appName, null, null, null, null));
+        return roleBusiness.deleteByName(appToken, new RoleModel(appName, roleName, null, null));
     }
 
-    @RequestMapping("/updateByIdAndAppName")
-    public Result updateByIdAndAppName(@NotBlank String appName,
-                                       @NotNull Integer roleId,
+    @RequestMapping("/updateByName")
+    public Result updateByName(@NotBlank String appName,
                                        String roleName,
-                                       Integer parentId,
                                        String description,
                                        @Pattern(regexp = "InterfaceControlled|BusinessAppControlled|InterfaceAndBusinessAppControlled") String type,
                                        String appToken) {
-        return roleBusiness.updateByIdAndAppName(appToken, new RoleModel(roleId, appName, roleName, parentId, description, type));
+        return roleBusiness.updateByName(appToken, new RoleModel(appName, roleName, description, type));
     }
 
     @RequestMapping("/queryByAppName")
-    public Result queryByAppName(@NotBlank String appName,
+    public Result queryBy(@NotBlank String appName,
                                  String appToken) {
         return roleBusiness.queryByAppName(appToken, appName);
     }
 
-    @RequestMapping("/queryByIdAndAppName")
-    public Result queryByIdAndAppName(@NotBlank String appName,
-                                      @NotNull Integer roleId,
+    @RequestMapping("/queryByName")
+    public Result queryByName(@NotBlank String appName,
+                                      @NotNull String roleName,
                                       String appToken) {
-        return roleBusiness.queryByIdAndAppName(appToken, new RoleModel(roleId, appName, null, null, null, null));
+        return roleBusiness.queryByName(appToken, new RoleModel(appName, roleName, null, null));
     }
 }

@@ -11,7 +11,6 @@ public class RedisClientBean {
     private boolean initFlag = false;
     @Autowired
     private MatrixAuthConfig matrixAuthConfig;
-    private Integer cacheDuration;
 
 
     private void init() {
@@ -22,7 +21,6 @@ public class RedisClientBean {
             if (matrixAuthConfig.getCachePassword() != null && matrixAuthConfig.getCachePassword().length() > 0) {
                 jedis.auth(matrixAuthConfig.getCachePassword());
             }
-            cacheDuration = matrixAuthConfig.getCacheDuration() == null ? 43200 : matrixAuthConfig.getCacheDuration();
         }
         initFlag = true;
     }
@@ -32,7 +30,7 @@ public class RedisClientBean {
             init();
         }
         if (jedis != null) {
-            jedis.setex(fullUserKey, cacheDuration, permissions);
+            jedis.set(fullUserKey, permissions);
         }
     }
 

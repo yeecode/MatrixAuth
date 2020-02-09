@@ -9,9 +9,9 @@ import java.util.List;
 public interface AuthDao {
     String fastQueryPermissionCodesByFullUserKey(@Param("fullUserKey") String fullUserKey);
 
-    List<String> queryPermissionCodesByFullUserKey(@Param("fullUserKey") String fullUserKey);
+    List<String> queryPermKeysByUserKey(@Param("appName") String appName, @Param("userKey") String userKey);
 
-    List<String> queryFullUserKeyByPermissionId(@Param("permissionId") Integer permissionId);
+    List<String> queryUserKeyByPermKey( @Param("appName") String appName, @Param("permKey") String permKey);
 
-    List<String> queryFullUserKeyByRoleId(@Param("roleId") Integer roleId);
+    List<String> queryUserKeyByRoleName(@Param("roleName") String roleName, @Param("appName") String appName);
 }

@@ -3,19 +3,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.yeecode.matrixauth.server.dao.UserXRoleDao">
     <insert id="add">
-        INSERT INTO `user_x_role` (`fullUserKey` ,`roleId`)
-        VALUES (#{fullUserKey},#{roleId});
+        INSERT INTO `user_x_role` (`appName` ,`userKey`,`roleName`)
+        VALUES (#{appName},#{userKey},#{roleName});
     </insert>
 
     <delete id="delete">
-        DELETE FROM `user_x_role` WHERE  `fullUserKey` = #{fullUserKey} AND `roleId` = #{roleId};
+        DELETE FROM `user_x_role` WHERE `appName` = #{appName} AND `userKey` = #{userKey} AND `roleName` = #{roleName} ;
     </delete>
 
-    <delete id="deleteByFullUserKey">
-        DELETE FROM `user_x_role` WHERE  `fullUserKey` = #{fullUserKey};
+    <delete id="deleteByUserKey">
+        DELETE FROM `user_x_role` WHERE `appName` = #{appName} AND `userKey` = #{userKey};
     </delete>
 
-    <delete id="deleteByRoleId">
-        DELETE FROM `user_x_role` WHERE  `roleId` = #{roleId};
+    <delete id="deleteByRoleName">
+        DELETE FROM `user_x_role` WHERE `appName` = #{appName} AND `roleName` = #{roleName};
     </delete>
 </mapper>

@@ -7,8 +7,6 @@ import java.io.IOException;
 
 public class RedisCacheClient extends CacheClient {
     private Jedis jedis;
-    @Value("${matrixauth.server.cache.cacheDuration}")
-    private Integer cacheDuration;
 
     public RedisCacheClient(String url, String password) {
         String address = url.split(":")[0];
@@ -17,13 +15,10 @@ public class RedisCacheClient extends CacheClient {
         if (password != null && password.length() > 0) {
             jedis.auth(password);
         }
-        if (cacheDuration == null) {
-            cacheDuration = 43200;
-        }
     }
 
     public void addOrUpdate(String fullUserKey, String permissions) {
-        jedis.setex(fullUserKey, cacheDuration, permissions);
+        jedis.set(fullUserKey, permissions);
     }
 
     public void delete(String fullUserKey) {

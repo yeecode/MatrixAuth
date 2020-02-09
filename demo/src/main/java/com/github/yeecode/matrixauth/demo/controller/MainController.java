@@ -42,4 +42,19 @@ public class MainController {
     public Result deleteUserXRole() {
         return matrixAuthClient.deleteUserXRole("user01", "2");
     }
+
+    @RequestMapping("/addUser")
+    public Result addUser() {
+        return matrixAuthClient.addUser("user01", "Yee");
+    }
+
+    @RequestMapping("/deleteUser")
+    public Result deleteUser() {
+        return matrixAuthClient.deleteUser("user01");
+    }
+
+    @RequestMapping("/updateUser")
+    public Result updateUser() {
+        return matrixAuthClient.updateUser("user01", "yee");
+    }
 }

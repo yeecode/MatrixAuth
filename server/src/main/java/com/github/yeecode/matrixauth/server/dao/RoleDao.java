@@ -10,11 +10,11 @@ import java.util.List;
 public interface RoleDao {
     Integer add(RoleModel cacheModel);
 
-    Integer deleteById(@Param("id") Integer id);
+    Integer deleteByName(@Param("name") String name, @Param("appName") String appName);
 
-    Integer updateById(RoleModel cacheModel);
+    Integer updateByName(RoleModel cacheModel);
 
     List<RoleModel> queryByAppName(@Param("name") String name);
 
-    RoleModel queryById(@Param("id") Integer id);
+    RoleModel queryByName(@Param("name") String name, @Param("appName") String appName);
 }

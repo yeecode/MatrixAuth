@@ -26,8 +26,6 @@ public class MatrixAuthConfig {
     private String cacheUrl;
     @Value("${yeecode.matrixauth.cacheclient.password}")
     private String cachePassword;
-    @Value("${yeecode.matrixauth.cacheclient.duration}")
-    private Integer cacheDuration;
 
     public String getApplicationName() {
         return applicationName;
@@ -47,10 +45,6 @@ public class MatrixAuthConfig {
 
     public String getCachePassword() {
         return cachePassword;
-    }
-
-    public Integer getCacheDuration() {
-        return cacheDuration;
     }
 
     public String getDataSourceUrl() {

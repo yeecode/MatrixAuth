@@ -28,20 +28,47 @@ public class HttpClientBean {
     @Autowired
     private MatrixAuthConfig matrixAuthConfig;
 
-    public Result addUserXRole(String userKey, String roleId) {
-        return operateUserXRole(userKey, roleId, "/authApi/addUserXRole");
+    public Result addUserXRole(String userKey, String roleName) {
+        return operateUserXRole(userKey, roleName, "/auth/addUserXRole");
     }
 
-    public Result deleteUserXRole(String userKey, String roleId) {
-        return operateUserXRole(userKey, roleId, "/authApi/deleteUserXRole");
+    public Result deleteUserXRole(String userKey, String roleName) {
+        return operateUserXRole(userKey, roleName, "/auth/deleteUserXRole");
     }
 
-    private synchronized Result operateUserXRole(String userKey, String roleId, String urlTail) {
+    public synchronized Result addUser(String userKey, String userName) {
         List<NameValuePair> paramsList = new ArrayList<>();
         paramsList.add(new BasicNameValuePair("userKey", userKey));
-        paramsList.add(new BasicNameValuePair("roleId", roleId));
+        paramsList.add(new BasicNameValuePair("userName", userName));
         paramsList.add(new BasicNameValuePair("appName", matrixAuthConfig.getApplicationName()));
         paramsList.add(new BasicNameValuePair("appToken", matrixAuthConfig.getApplicationToken()));
+        return sendPost(matrixAuthConfig.getServerUrl() + "user/add", paramsList);
+    }
+
+    public synchronized Result deleteUser(String userKey) {
+        List<NameValuePair> paramsList = new ArrayList<>();
+        paramsList.add(new BasicNameValuePair("userKey", userKey));
+        paramsList.add(new BasicNameValuePair("appName", matrixAuthConfig.getApplicationName()));
+        paramsList.add(new BasicNameValuePair("appToken", matrixAuthConfig.getApplicationToken()));
+        return sendPost(matrixAuthConfig.getServerUrl() + "user/delete", paramsList);
+    }
+
+    public synchronized Result updateUser(String userKey, String userName) {
+        List<NameValuePair> paramsList = new ArrayList<>();
+        paramsList.add(new BasicNameValuePair("userKey", userKey));
+        paramsList.add(new BasicNameValuePair("userName", userName));
+        paramsList.add(new BasicNameValuePair("appName", matrixAuthConfig.getApplicationName()));
+        paramsList.add(new BasicNameValuePair("appToken", matrixAuthConfig.getApplicationToken()));
+        return sendPost(matrixAuthConfig.getServerUrl() + "user/update", paramsList);
+    }
+
+    private synchronized Result operateUserXRole(String userKey, String roleName, String urlTail) {
+        List<NameValuePair> paramsList = new ArrayList<>();
+        paramsList.add(new BasicNameValuePair("userKey", userKey));
+        paramsList.add(new BasicNameValuePair("roleName", roleName));
+        paramsList.add(new BasicNameValuePair("appName", matrixAuthConfig.getApplicationName()));
+        paramsList.add(new BasicNameValuePair("appToken", matrixAuthConfig.getApplicationToken()));
+        paramsList.add(new BasicNameValuePair("requestSource","BusinessApp"));
         return sendPost(matrixAuthConfig.getServerUrl() + urlTail, paramsList);
     }
 

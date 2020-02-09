@@ -5,11 +5,11 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface RoleXPermissionDao {
-    Integer add(@Param("roleId") Integer roleId, @Param("permissionId") Integer permissionId);
+    Integer add(@Param("appName") String appName, @Param("roleName") String roleName, @Param("permKey") String permKey);
 
-    Integer delete(@Param("roleId") Integer roleId, @Param("permissionId") Integer permissionId);
+    Integer delete(@Param("appName") String appName, @Param("roleName") String roleName, @Param("permKey") String permKey);
 
-    Integer deleteByRoleId(@Param("roleId") Integer roleId);
+    Integer deleteByRoleName(@Param("appName") String appName, @Param("roleName") String roleName);
 
-    Integer deleteByPermissionId(@Param("permissionId") Integer permissionId);
+    Integer deleteByPermKey(@Param("appName") String appName, @Param("permKey") String permKey);
 }

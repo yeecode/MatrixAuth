@@ -22,33 +22,47 @@ public class AuthController {
     @RequestMapping("/addUserXRole")
     public Result addUserXRole(@NotBlank String appName,
                                @NotBlank String userKey,
-                               @NotNull Integer roleId,
+                               @NotNull String roleName,
+                               String requestSource,
                                String appToken) {
-        return authBusiness.addUserXRole(appToken, appName, userKey, roleId, RequestSource.Interface);
+        RequestSource rs;
+        if (requestSource == null) {
+            rs = RequestSource.Interface;
+        } else {
+            rs = RequestSource.valueOf(requestSource);
+        }
+        return authBusiness.addUserXRole(appToken, appName, userKey, roleName, rs);
     }
 
     @RequestMapping("/deleteUserXRole")
     public Result deleteUserXRole(@NotBlank String appName,
                                   @NotBlank String userKey,
-                                  @NotNull Integer roleId,
+                                  @NotNull String roleName,
+                                  String requestSource,
                                   String appToken) {
-        return authBusiness.deleteUserXRole(appToken, appName, userKey, roleId, RequestSource.Interface);
+        RequestSource rs;
+        if (requestSource == null) {
+            rs = RequestSource.Interface;
+        } else {
+            rs = RequestSource.valueOf(requestSource);
+        }
+        return authBusiness.deleteUserXRole(appToken, appName, userKey, roleName, rs);
     }
 
     @RequestMapping("/addRoleXPermission")
     public Result addRoleXPermission(@NotBlank String appName,
-                                     @NotNull Integer roleId,
-                                     @NotNull Integer permissionId,
+                                     @NotNull String roleName,
+                                     @NotNull String permKey,
                                      String appToken) {
-        return authBusiness.addRoleXPermission(appToken, appName, roleId, permissionId);
+        return authBusiness.addRoleXPermission(appToken, appName, roleName, permKey);
     }
 
     @RequestMapping("/delRoleXPermission")
     public Result delRoleXPermission(@NotBlank String appName,
-                                     @NotNull Integer roleId,
-                                     @NotNull Integer permissionId,
+                                     @NotNull String roleName,
+                                     @NotNull String permKey,
                                      String appToken) {
-        return authBusiness.delRoleXPermission(appToken, appName, roleId, permissionId);
+        return authBusiness.delRoleXPermission(appToken, appName, roleName, permKey);
     }
 
     @RequestMapping("/fastQueryPermissionCodesByUserKey")

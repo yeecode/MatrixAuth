@@ -1,7 +1,6 @@
 package com.github.yeecode.matrixauth.server.model;
 
 public class UserModel {
-    private Integer id;
     private String appName;
     private String key;
     private String name;
@@ -13,21 +12,6 @@ public class UserModel {
         this.appName = appName;
         this.key = key;
         this.name = name;
-    }
-
-    public UserModel(Integer id, String appName, String key, String name) {
-        this.id = id;
-        this.appName = appName;
-        this.key = key;
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getAppName() {

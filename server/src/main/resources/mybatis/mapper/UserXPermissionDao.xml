@@ -3,10 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.yeecode.matrixauth.server.dao.UserXPermissionDao">
     <insert id="addOrUpdate">
-        INSERT INTO `user_x_permission` (`fullUserKey`,`permissions`)
-        VALUES (#{fullUserKey},#{permissions})
+        INSERT INTO `user_x_permission` (`fullUserKey`,`permissionKeys`)
+        VALUES (#{fullUserKey},#{permissionKeys})
         ON DUPLICATE KEY UPDATE
-        `permissions` = #{permissions};
+        `permissionKeys` = #{permissionKeys};
     </insert>
 
     <delete id="deleteByFullUserKey">

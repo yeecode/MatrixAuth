@@ -12,7 +12,7 @@ public class UserXPermissionBusiness {
     @Autowired
     private AuthDao authDao;
 
-    void addOrUpdatePermissionsByFullUserKey(String fullUserKey, String permissions) {
-        userXPermissionDao.addOrUpdate(fullUserKey, permissions);
+    void addOrUpdatePermissionsByFullUserKey(String fullUserKey, String permissionKeys) {
+        userXPermissionDao.addOrUpdate(fullUserKey, permissionKeys);
     }
 }

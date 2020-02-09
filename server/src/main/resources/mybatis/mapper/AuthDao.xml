@@ -7,28 +7,24 @@
         WHERE `fullUserKey` = #{fullUserKey};
     </select>
 
-    <select id="queryPermissionCodesByFullUserKey" resultType="String">
-        SELECT `code` FROM `permission`
-        WHERE `id`
-        IN
-            (
-              SELECT `permissionId` FROM `role_x_permission` WHERE `roleId` IN
-              (
-                SELECT `roleId` FROM `user_x_role` WHERE `fullUserKey` = #{fullUserKey}
-              )
-            ) ;
+    <select id="queryPermKeysByUserKey" resultType="String">
+          SELECT `permKey` FROM `role_x_permission`
+          WHERE appName = #{appName} AND `roleName` IN
+          (
+            SELECT `roleName` FROM `user_x_role` WHERE `userKey` = #{userKey} AND appName = #{appName}
+          );
     </select>
 
-    <select id="queryFullUserKeyByPermissionId" resultType="String">
-        SELECT `fullUserKey` FROM `user_x_role`
-        WHERE `roleId`
+    <select id="queryUserKeyByPermKey" resultType="String">
+        SELECT `userKey` FROM `user_x_role`
+        WHERE appName = #{appName} AND `roleName`
         IN (
-              SELECT `roleId` FROM `role_x_permission` WHERE `permissionId` = #{permissionId}
+              SELECT `roleName` FROM `role_x_permission` WHERE appName = #{appName} AND `permKey` = #{permKey}
             ) ;
     </select>
 
-    <select id="queryFullUserKeyByRoleId" resultType="String">
-        SELECT `fullUserKey` FROM `user_x_role`
-        WHERE `roleId` = #{roleId};
+    <select id="queryUserKeyByRoleName" resultType="String">
+        SELECT `userKey` FROM `user_x_role`
+        WHERE appName = #{appName} AND `roleName` = #{roleName};
     </select>
 </mapper>
