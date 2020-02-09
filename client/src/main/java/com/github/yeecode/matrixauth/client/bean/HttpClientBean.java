@@ -42,7 +42,7 @@ public class HttpClientBean {
         paramsList.add(new BasicNameValuePair("userName", userName));
         paramsList.add(new BasicNameValuePair("appName", matrixAuthConfig.getApplicationName()));
         paramsList.add(new BasicNameValuePair("appToken", matrixAuthConfig.getApplicationToken()));
-        return sendPost(matrixAuthConfig.getServerUrl() + "user/add", paramsList);
+        return sendPost(matrixAuthConfig.getServerUrl() + "/user/add", paramsList);
     }
 
     public synchronized Result deleteUser(String userKey) {
@@ -50,7 +50,7 @@ public class HttpClientBean {
         paramsList.add(new BasicNameValuePair("userKey", userKey));
         paramsList.add(new BasicNameValuePair("appName", matrixAuthConfig.getApplicationName()));
         paramsList.add(new BasicNameValuePair("appToken", matrixAuthConfig.getApplicationToken()));
-        return sendPost(matrixAuthConfig.getServerUrl() + "user/delete", paramsList);
+        return sendPost(matrixAuthConfig.getServerUrl() + "/user/deleteByKey", paramsList);
     }
 
     public synchronized Result updateUser(String userKey, String userName) {
@@ -59,7 +59,7 @@ public class HttpClientBean {
         paramsList.add(new BasicNameValuePair("userName", userName));
         paramsList.add(new BasicNameValuePair("appName", matrixAuthConfig.getApplicationName()));
         paramsList.add(new BasicNameValuePair("appToken", matrixAuthConfig.getApplicationToken()));
-        return sendPost(matrixAuthConfig.getServerUrl() + "user/update", paramsList);
+        return sendPost(matrixAuthConfig.getServerUrl() + "/user/updateByKey", paramsList);
     }
 
     private synchronized Result operateUserXRole(String userKey, String roleName, String urlTail) {

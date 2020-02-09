@@ -14,7 +14,7 @@ public interface RoleDao {
 
     Integer updateByName(RoleModel cacheModel);
 
-    List<RoleModel> queryByAppName(@Param("name") String name);
+    List<RoleModel> queryByAppName(@Param("appName") String appName);
 
     RoleModel queryByName(@Param("name") String name, @Param("appName") String appName);
 }

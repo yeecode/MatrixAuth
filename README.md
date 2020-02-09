@@ -4,7 +4,7 @@
 
 # [MatrixAuth](https://github.com/yeecode/MatrixAuth)
 ![language](https://img.shields.io/badge/language-java-green.svg)
-![version](https://img.shields.io/badge/mvn-0.0.1-blue.svg?style=flat)
+![version](https://img.shields.io/badge/mvn-1.0.0-blue.svg?style=flat)
 ![license](https://img.shields.io/badge/license-Apache-brightgreen.svg)
 
 
@@ -22,7 +22,7 @@ High-performance lightweight distributed permission system.
 
 ## 1 系统简介
 
-MatrixAuth是一个高性能的分布式权限系统，它以RBAC（基于角色的访问控制）为基础实现用户的权限管理。多个业务应用可以共同接入到MatrixAuth中，并基于MatrixAuth完成权限验证工作。
+MatrixAuth是一个高性能的分布式权限系统，它以RBAC（基于角色的访问控制）模型为基础实现权限管理，支持多个业务应用的接入。
 
 <center>
 	<img width="60%" src="./pic/MatrixAuthMain.png">
@@ -30,9 +30,10 @@ MatrixAuth是一个高性能的分布式权限系统，它以RBAC（基于角色
 
 MatrixAuth具有以下特点：
 
-- 高性能：系统采用分流、缓存、分库分表、反范式设计等手段设计，具有极高的性能，可以同时支持数十业务应用的接入。
+- 高性能：系统采用分流、缓存、分库分表、反范式设计等手段设计，具有极高的性能，可以同时支持数十业务应用的接入。MatrixAuthClient只需要查询一次内存数据库便可以完成判权工作。可支持每个业务应用每秒10万次的查询请求。
 - 轻量级：系统的服务端可以采用Jar包直接启动。系统客户端轻量易用。
-- 多租户：系统支持多个业务应用的接入，各个业务应用之间可以独立使用、共享使用数据库、缓存。从而保证了各租户之间的数据隔离。
+- 多租户：系统支持多个业务应用的接入，各个业务应用之间可以独立使用、共享使用数据库、缓存。从而保证了各租户之间的数据隔离。可支持100个业务应用的接入。
+- 可扩展：系统可接入多个数据源，每个数据源支持集群扩展；系统可以接入多个缓存，每个缓存支持集群扩展。
 - 安全：业务调用无法绕过系统的权限验证机制。
 - 可靠：系统无单故障点，权限设置模块、数据库、缓存均可独立重启而不会对业务系统的验权操作造成影响。
 - 易用：系统只需要简单的配置后便可以使用注解完成权限配置。服务端具有完整的API接口。

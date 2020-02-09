@@ -7,7 +7,7 @@
         VALUES (#{appName},#{key},#{name},#{description});
     </insert>
 
-    <delete id="deleteByKey" parameterType="Integer">
+    <delete id="deleteByKey" >
         DELETE FROM permission WHERE  `key` = #{key} AND `appName` = #{appName};
     </delete>
 

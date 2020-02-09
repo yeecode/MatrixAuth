@@ -7,7 +7,7 @@
         VALUES (#{appName},#{name},#{description},#{type});
     </insert>
 
-    <delete id="deleteByName" parameterType="Integer">
+    <delete id="deleteByName">
         DELETE FROM role WHERE  `name` = #{name} AND `appName` = #{appName};
     </delete>
 

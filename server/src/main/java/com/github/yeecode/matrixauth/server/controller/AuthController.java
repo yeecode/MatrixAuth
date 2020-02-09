@@ -2,7 +2,6 @@ package com.github.yeecode.matrixauth.server.controller;
 
 import com.github.yeecode.matrixauth.server.business.AuthBusiness;
 import com.github.yeecode.matrixauth.server.constant.RequestSource;
-import com.github.yeecode.matrixauth.server.constant.RoleType;
 import com.github.yeecode.matrixauth.server.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -57,12 +56,12 @@ public class AuthController {
         return authBusiness.addRoleXPermission(appToken, appName, roleName, permKey);
     }
 
-    @RequestMapping("/delRoleXPermission")
-    public Result delRoleXPermission(@NotBlank String appName,
+    @RequestMapping("/deleteRoleXPermission")
+    public Result deleteRoleXPermission(@NotBlank String appName,
                                      @NotNull String roleName,
                                      @NotNull String permKey,
                                      String appToken) {
-        return authBusiness.delRoleXPermission(appToken, appName, roleName, permKey);
+        return authBusiness.deleteRoleXPermission(appToken, appName, roleName, permKey);
     }
 
     @RequestMapping("/fastQueryPermissionCodesByUserKey")

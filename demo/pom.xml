@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.github.yeecode.matrixauth</groupId>
         <artifactId>MatrixAuth</artifactId>
-        <version>0.0.1</version>
+        <version>1.0.0</version>
     </parent>
     <artifactId>MatrixAuthDemo</artifactId>
     <packaging>jar</packaging>
