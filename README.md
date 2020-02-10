@@ -10,54 +10,50 @@
 
 High-performance lightweight distributed permission system. 
 
-高性能轻量级分布式权限系统。
+---
+
+[中文说明](./README_CN.md)
 
 ---
 
-更多介绍信息可参照MatrixAuth官方网站：[官方网站](http://matrixauth.top/)。
+## 1 System introduction
 
-更多使用说明可参见MatrixAuth官方文档：[官方文档](http://matrixauth.top/docs/)。
-
----
-
-## 1 系统简介
-
-MatrixAuth是一个高性能的分布式权限系统，它以RBAC（基于角色的访问控制）模型为基础实现权限管理，支持多个业务应用的接入。
+MatrixAuth is a high-performance distributed permission system. It implements permission management based on RBAC (role-based access control) model and supports access of multiple business applications.
 
 <center>
-	<img width="60%" src="./pic/MatrixAuthMain.png">
+	<img width="60%" src="./pic/MatrixAuthMain_en.png">
 </center>
 
-MatrixAuth具有以下特点：
+Matrixauth has the following features:
 
-- 高性能：系统采用分流、缓存、分库分表、反范式设计等手段设计，具有极高的性能，可以同时支持数十业务应用的接入。MatrixAuthClient只需要查询一次内存数据库便可以完成判权工作。可支持每个业务应用每秒10万次的查询请求。
-- 轻量级：系统的服务端可以采用Jar包直接启动。系统客户端轻量易用。
-- 多租户：系统支持多个业务应用的接入，各个业务应用之间可以独立使用、共享使用数据库、缓存。从而保证了各租户之间的数据隔离。可支持100个业务应用的接入。
-- 可扩展：系统可接入多个数据源，每个数据源支持集群扩展；系统可以接入多个缓存，每个缓存支持集群扩展。
-- 安全：业务调用无法绕过系统的权限验证机制。
-- 可靠：系统无单故障点，权限设置模块、数据库、缓存均可独立重启而不会对业务系统的验权操作造成影响。
-- 易用：系统只需要简单的配置后便可以使用注解完成权限配置。服务端具有完整的API接口。
+- High performance: the system supports access to dozens of business applications. MatrixAuthClient only needs to query the memory database once to complete the authorization work. It can support 100000 query requests per second for each business application.
+- Lightweight: the server of the system can be started directly with jar package. The system client is light and easy to use.
+- Multi tenant: the system supports the access of multiple business applications. Each business application can independently use and share the database and cache. Thus, data isolation among tenants is ensured. It can support the access of 100 service applications.
+- Scalable: the system can access multiple data sources, and each data source supports cluster expansion; the system can access multiple caches, and each cache supports cluster expansion.
+- Security: business calls cannot bypass the system's permission validation mechanism.
+- Reliable: there is no single failure point in the system, and the authority setting module, database and cache can be restarted independently without affecting the authorization operation of the business system.
+- Easy to use: after simple configuration, the system can use annotations to complete permission configuration. The server has a complete API interface.
 
-## 2 系统结构
+## 2 System structure
 
-MatrixAuth系统主要包含MatrixAuthServer、MatrixAuthClient、数据源、缓存四部分组成，这四部分与业务系统的关系如下图所示。
+Matrixauth system mainly consists of MatrixAuthServer, MatrixAuthClient, data source and cache. The relationship between these four parts and business system is shown in the figure below.
 
 <center>
-	<img width="100%" src="./pic/MatrixAuthB.png">
+	<img width="100%" src="./pic/MatrixAuthB_en.png">
 </center>
 
-MatrixAuthServer是MatrixAuth的权限管理子系统，通过它可以实现业务应用的管理、角色权限的管理等。同时，MatrixAuthServer还负责将各种权限设置信息同步到数据库和缓存中。
+MatrixAuthServer is the permission management subsystem of MatrixAuth, through which business application management and role permission management can be realized. At the same time, MatrixAuthServer is also responsible for synchronizing various permission setting information into the database and cache.
 
-MatrixAuthClient是一个可以集成到业务应用中的Jar包。MatrixAuthClient在被集成到业务应用中并被激活之后，会对进入业务应用的每一个请求进行权限验证，只有请求的发起方具有相关权限时请求才会被放行，否则请求会被阻止。
+MatrixAuthClient is a jar package that can be integrated into business applications. After the MatrixAuthClient is integrated into the business application and activated, it will verify the permission of every request entering the business application. Only when the initiator of the request has the relevant permission, the request will be released, otherwise the request will be blocked.
 
-MatrixAuthClient需要基于数据源中的信息展开权限验证。一个数据源可以供一个业务应用的MatrixAuthClient单独使用，也可以供多个业务应用的MatrixAuthClient共用。业务应用的MatrixAuthClient也可以不配置数据源，这时该业务应用的MatrixAuthClient将使用默认数据源。
+MatrixAuthClient needs to expand permission verification based on the information in the data source. A data source can be used by a business application's MatrixAuthClient alone, or shared by multiple business application's MatrixAuthClient. The business application's MatrixAuthClient can also not configure the data source. At this time, the business application's MatrixAuthClient will use the default data source.
 
-可以为MatrixAuthClient配置缓存以提升其验权效率。配置缓存时不需要和数据源一一对应。缓存可以供一个业务应用的MatrixAuthClient独享，也可以供多个业务应用的MatrixAuthClient共享。
+You can configure the cache for MatrixAuthClient to improve its authentication efficiency. Cache configuration does not need to correspond to data sources one by one. The cache can be shared by MatrixAuthClient of one business application or by MatrixAuthClient of multiple business applications.
 
-在系统设置完成后，用户发往业务应用的请求会经过业务应用内的MatrixAuthClient进行权限验证。MatrixAuthClient会优先前往自身设置的缓存读取权限信息，如果未设置缓存或者缓存中未查询到结果，则会前往数据源查询权限信息。然后，MatrixAuthClient会根据权限信息决定该请求是被放行还是被拦截。
+After the system setting is completed, the user's request to the business application will be verified by MatrixAuthClient in the business application. MatrixAuthClient will first go to the cache set by itself to read the permission information. If the cache is not set or the result is not found in the cache, it will go to the data source to query the permission information. Then, MatrixAuthClient will decide whether the request is released or blocked according to the permission information.
 
 ---
 
-更多介绍信息可参照MatrixAuth官方网站：[官方网站](http://matrixauth.top/)。
+For more information, please refer to the MatrixAuth website:[HOME PAGE](http://en.matrixauth.top/)。
 
-更多使用说明可参见MatrixAuth官方文档：[官方文档](http://matrixauth.top/docs/)。
+For more instructions, please refer to the MatrixAuth document:[DOCUMENTS](http://en.matrixauth.top/docs/)。
