@@ -21,7 +21,7 @@
 MatrixAuth是一个高性能的分布式权限系统，它以RBAC（基于角色的访问控制）模型为基础实现权限管理，支持多个业务应用的接入。
 
 <center>
-	<img width="60%" src="./pic/MatrixAuthMain.png">
+	<img width="80%" src="./pic/MatrixAuthMain.png">
 </center>
 
 MatrixAuth具有以下特点：
@@ -54,6 +54,6 @@ MatrixAuthClient需要基于数据源中的信息展开权限验证。一个数�
 
 ---
 
-更多介绍信息可参照MatrixAuth官方网站：[官方网站](http://matrixauth.top/)。
+更多介绍信息可参照MatrixAuth官方网站：[官方网站 matrixauth.top](http://matrixauth.top/)。
 
-更多使用说明可参见MatrixAuth官方文档：[官方文档](http://matrixauth.top/docs/)。
+更多使用说明可参见MatrixAuth官方文档：[官方文档 matrixauth.top/docs/](http://matrixauth.top/docs/)。

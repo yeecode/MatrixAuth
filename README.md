@@ -21,7 +21,7 @@ High-performance lightweight distributed permission system.
 MatrixAuth is a high-performance distributed permission system. It implements permission management based on RBAC (role-based access control) model and supports access of multiple business applications.
 
 <center>
-	<img width="60%" src="./pic/MatrixAuthMain_en.png">
+	<img width="80%" src="./pic/MatrixAuthMain_en.png">
 </center>
 
 Matrixauth has the following features:
@@ -54,6 +54,6 @@ After the system setting is completed, the user's request to the business applic
 
 ---
 
-For more information, please refer to the MatrixAuth website:[HOME PAGE](http://en.matrixauth.top/)。
+For more information, please refer to the MatrixAuth website : [en.matrixauth.top](http://en.matrixauth.top/)。
 
-For more instructions, please refer to the MatrixAuth document:[DOCUMENTS](http://en.matrixauth.top/docs/)。
+For more instructions, please refer to the MatrixAuth document : [en.matrixauth.top/docs](http://en.matrixauth.top/docs/)。
