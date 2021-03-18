@@ -57,3 +57,19 @@ MatrixAuthClient需要基于数据源中的信息展开权限验证。一个数�
 更多介绍信息可参照MatrixAuth官方网站：[官方网站 matrixauth.top](http://matrixauth.top/)。
 
 更多使用说明可参见MatrixAuth官方文档：[官方文档 matrixauth.top/docs/](http://matrixauth.top/docs/)。
+
+---
+
+《高性能架构之道》一书完整介绍了MatrixAuth项目的架构原理。
+
+并在 第12章 高性能架构实践 章节给出了该项目的架构设计过程。
+
+你可以参考该书籍了解MatrixAuth的细节和高性能架构知识。
+
+**书籍地址：** [**京东**](https://union-click.jd.com/jdc?e=&p=AyIGZRprFQASBl0SXBIyVlgNRQQlW1dCFFlQCxxKQgFHRE5XDVULR0UVABIGXRJcEh1LQglGaxFiGlEWTTtIYHIAS35dTnduVBFPO3UOHjdUK1sUAxIDXB1TFwIiN1Uca0NsEgZUGloUBxICVitaJQIVB1AcWhMEFwFcEl8lBRIOZUAOewQaVAcfDh0FEQVUGVklMiIEZStrFTIRNxd1DxwKRgBcSFpFAUJTUExTE1JBVFUeWxFVQVNSE19AUBA3VxpaEQs%3D) 
+
+<center>
+	<img src="./pic/habook.jpg">
+</center>
+
+**书籍地址：** [**京东**](https://union-click.jd.com/jdc?e=&p=AyIGZRprFQASBl0SXBIyVlgNRQQlW1dCFFlQCxxKQgFHRE5XDVULR0UVABIGXRJcEh1LQglGaxFiGlEWTTtIYHIAS35dTnduVBFPO3UOHjdUK1sUAxIDXB1TFwIiN1Uca0NsEgZUGloUBxICVitaJQIVB1AcWhMEFwFcEl8lBRIOZUAOewQaVAcfDh0FEQVUGVklMiIEZStrFTIRNxd1DxwKRgBcSFpFAUJTUExTE1JBVFUeWxFVQVNSE19AUBA3VxpaEQs%3D) 
